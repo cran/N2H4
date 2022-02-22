@@ -11,10 +11,10 @@
 #' @examples
 #'  \donttest{
 #'   print(cate_list_url_ex)
-#'   getUrlListByCategory(cate_list_url_ex)
+#'   getUrlList(cate_list_url_ex)
 #'   }
 
-getUrlListByCategory <-
+getUrlList <-
   function(turl = url,
            col = c("titles", "links")) {
     uat <-
@@ -50,3 +50,4 @@ getUrlListByCategory <-
     return(news_lists[, col])
 
   }
+
