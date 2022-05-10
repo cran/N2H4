@@ -4,11 +4,7 @@
 \alias{getContentBody}
 \title{Get Content body name.}
 \usage{
-getContentBody(
-  html_obj,
-  body_node_info = "div#articleBodyContents",
-  body_attr = ""
-)
+getContentBody(html_obj, body_node_info = "div#dic_area", body_attr = "")
 }
 \arguments{
 \item{html_obj}{"xml_document" "xml_node" using read_html function.}
@@ -24,9 +20,8 @@ Get character body content.
 Get naver news body from link.
 }
 \examples{
-\donttest{
-  print(news_url_ex)
-  hobj <- rvest::read_html(news_url_ex)
+\dontrun{
+  hobj <- rvest::read_html("https://n.news.naver.com/mnews/article/214/0001195110?sid=103")
   getContentBody(hobj)
   }
 }

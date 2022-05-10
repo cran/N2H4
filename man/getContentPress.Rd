@@ -6,7 +6,7 @@
 \usage{
 getContentPress(
   html_obj,
-  press_node_info = "div.article_header div a img",
+  press_node_info = "div.media_end_head_top a img",
   press_attr = "title"
 )
 }
@@ -24,9 +24,8 @@ Get character press.
 Get naver news press name from link.
 }
 \examples{
-\donttest{
-  print(news_url_ex)
-  hobj <- rvest::read_html(news_url_ex)
+\dontrun{
+  hobj <- rvest::read_html("https://n.news.naver.com/mnews/article/214/0001195110?sid=103")
   getContentPress(hobj)
   }
 }

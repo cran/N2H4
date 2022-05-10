@@ -6,9 +6,8 @@
 \usage{
 getContentDatetime(
   html_obj,
-  datetime_node_info = "span.t11",
-  datetime_attr = "",
-  getEdittime = TRUE
+  datetime_node_info = "span._ARTICLE_DATE_TIME",
+  datetime_attr = "data-date-time"
 )
 }
 \arguments{
@@ -17,8 +16,6 @@ getContentDatetime(
 \item{datetime_node_info}{Information about node names like tag with class or id. Default is "div.article_info h3" for naver news title.}
 
 \item{datetime_attr}{if you want to get attribution text, please write down here.}
-
-\item{getEdittime}{if TRUE, can get POSIXlt type datetime length 2 means published time and final edited time. if FALSE, get Date length 1.}
 }
 \value{
 Get POSIXlt type datetime.
@@ -27,9 +24,8 @@ Get POSIXlt type datetime.
 Get naver news published datetime from link.
 }
 \examples{
-\donttest{
-  print(news_url_ex)
-  hobj <- rvest::read_html(news_url_ex)
+\dontrun{
+  hobj <- rvest::read_html("https://n.news.naver.com/mnews/article/214/0001195110?sid=103")
   getContentDatetime(hobj)
   }
 }

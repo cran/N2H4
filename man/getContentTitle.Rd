@@ -6,7 +6,7 @@
 \usage{
 getContentTitle(
   html_obj,
-  title_node_info = "div.article_info h3",
+  title_node_info = "h2.media_end_head_headline",
   title_attr = ""
 )
 }
@@ -24,9 +24,8 @@ Get character title.
 Get naver news Title from link.
 }
 \examples{
-\donttest{
-  print(news_url_ex)
-  hobj <- rvest::read_html(news_url_ex)
+\dontrun{
+  hobj <- rvest::read_html("https://n.news.naver.com/mnews/article/214/0001195110?sid=103")
   getContentTitle(hobj)
   }
 }

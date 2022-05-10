@@ -1,8 +1,8 @@
 Package: N2H4
 Type: Package
 Title: Handling Methods for Naver News Text Crawling
-Version: 0.6.1
-Date: 2022-02-18
+Version: 0.6.3
+Date: 2022-05-09
 Authors@R: person(given = "Chanyub",
              family = "Park",
              role = c("aut","cre"),
@@ -16,12 +16,11 @@ BugReports: https://github.com/forkonlp/N2H4/issues
 RoxygenNote: 7.1.2
 Depends: R (>= 3.5.0)
 Encoding: UTF-8
-LazyData: true
-Suggests: httptest, testthat
-Imports: rvest, httr, jsonlite, tibble, dplyr, lubridate, urltools
+Suggests: testthat
+Imports: rvest, httr, jsonlite, tibble, dplyr, urltools, methods
 NeedsCompilation: no
-Packaged: 2022-02-18 14:57:28 UTC; mrchypark
+Packaged: 2022-05-09 15:33:43 UTC; mrchypark
 Author: Chanyub Park [aut, cre] (<https://orcid.org/0000-0001-6474-2570>)
 Maintainer: Chanyub Park <mrchypark@gmail.com>
 Repository: CRAN
-Date/Publication: 2022-02-22 13:00:07 UTC
+Date/Publication: 2022-05-10 09:20:05 UTC
