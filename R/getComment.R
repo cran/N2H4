@@ -24,12 +24,16 @@ getComment <- function(turl = url,
                        page = 1,
                        sort = c("favorite", "reply", "old", "new", "best"),
                        type = c("df", "list")) {
-  sort <- toupper(sort[1])
+  turl <-
+    httr::GET(turl,
+              httr::user_agent("N2H4 by chanyub.park <mrchypark@gmail.com>"))$url
   tem <- strsplit(urltools::path(turl), "[/]")[[1]]
-  ticket <- "news"
-  pool <- "cbox5"
+
   oid <- tem[3]
   aid <- tem[4]
+  sort <- toupper(sort[1])
+  ticket <- "news"
+  pool <- "cbox5"
   templateId <- "view_politics"
   useAltSort <- "&useAltSort=true"
 
