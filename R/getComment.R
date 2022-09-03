@@ -1,139 +1,103 @@
 #' Get Comment
 #'
-#' Get naver news comments
+#' Get naver news comments.
 #' if you want to get data only comment, enter command like below.
 #' getComment(url)$result$commentList[[1]]
 #'
-#' @param turl like <https://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=100&oid=056&aid=0010335895>.
-#' @param pageSize is a number of comments per page. defult is 10. max is 100.
-#' @param page is defult is 1.
-#' @param sort you can select favorite, reply, old, new. favorite is defult.
-#' @param type type return df or list. Defult is df. df return part of data not all.
+#' @param turl like <https://n.news.naver.com/mnews/article/023/0003712918>.
+#' @param count is a number of comments. Defualt is 10. "all" works to get all comments.
+#' @param type type return df or list. Defualt is df. df return part of data not all.
 #' @return a [tibble][tibble::tibble-package]
 #' @export
-#' @importFrom httr GET user_agent add_headers content
-#' @importFrom jsonlite fromJSON
-#' @importFrom tibble as_tibble
 #' @examples
 #' \dontrun{
 #'   getComment("https://n.news.naver.com/mnews/article/421/0002484966?sid=100")
 #'}
-
-getComment <- function(turl = url,
-                       pageSize = 10,
-                       page = 1,
-                       sort = c("favorite", "reply", "old", "new", "best"),
+#
+getComment <- function(turl,
+                       count = 10,
                        type = c("df", "list")) {
-  turl <-
-    httr::GET(turl,
-              httr::user_agent("N2H4 by chanyub.park <mrchypark@gmail.com>"))$url
-  tem <- strsplit(urltools::path(turl), "[/]")[[1]]
-
-  oid <- tem[3]
-  aid <- tem[4]
-  sort <- toupper(sort[1])
-  ticket <- "news"
-  pool <- "cbox5"
-  templateId <- "view_politics"
-  useAltSort <- "&useAltSort=true"
-
-  if (grepl("http(|s)://(m.|)sports.", turl)) {
-    ticket <- "sports"
-    pool <- "cbox2"
-    templateId <- "view"
-    useAltSort <- ""
-  }
-
-  url <-
-    paste0(
-      "https://apis.naver.com/commentBox/cbox/web_naver_list_jsonp.json?",
-      "ticket=",
-      ticket,
-      "&templateId=",
-      templateId,
-      "&pool=",
-      pool,
-      "&lang=ko&country=KR&objectId=news",
-      oid,
-      "%2C",
-      aid,
-      "&categoryId=&pageSize=",
-      pageSize,
-      "&indexSize=10&groupId=&page=",
-      page,
-      "&initialize=true",
-      useAltSort,
-      "&replyPageSize=30&moveTo=&sort=",
-      sort
-    )
-
-  con <- httr::GET(
-    url,
-    httr::user_agent("N2H4 using r by chanyub.park mrchypark@gmail.com"),
-    httr::add_headers(Referer = turl)
-  )
-  tt <- httr::content(con, "text")
-
-  tt <- gsub("_callback", "", tt)
-  tt <- gsub("\\(", "[", tt)
-  tt <- gsub("\\)", "]", tt)
-  tt <- gsub(";", "", tt)
-  tt <- gsub("\n", "", tt)
-
-  dat <- jsonlite::fromJSON(tt)
-  if (type[1] == "list") {
-    class(dat) <- "list"
-  }
-  if (type[1] == "df") {
-    dat <- dat$result$commentList[[1]]
-    dat$snsList <- NULL
-    dat <- tibble::as_tibble(dat)
-    if (length(dat) == 0) {
-      dat <- tibble::tibble()
-    }
-  }
-  return(dat)
+  get_comment(turl, count, type)
 }
-
-
 
 #' Get All Comment
 #'
 #' Get all comments from the provided news article url on naver
 #'
-#' Works just like getComment, but this function executed in a fashion where it finds and extracts all comments from the given url.
+#' Works just like getComment, but this function executed in a fashion
+#'   where it finds and extracts all comments from the given url.
 #'
-#' @param turl character. News article on 'Naver' such as <http://news.naver.com/main/read.nhn?mode=LSD&mid=shm&sid1=100&oid=056&aid=0010335895>. News articl url that is not on Naver.com domain will generate an error.
-#' @param ... parameter in getComment function.
+#' @param turl character. News article on 'Naver' such as
+#' <https://n.news.naver.com/mnews/article/023/0003712918>.
+#' News article url that is not on Naver.com domain will generate an error.
 #' @return a [tibble][tibble::tibble-package]
-#' @importFrom dplyr bind_rows
 #' @export
 #' @examples
 #' \dontrun{
-#'   getAllComment("https://n.news.naver.com/mnews/article/214/0001195110?sid=103")
+#'   getAllComment("https://n.news.naver.com/mnews/article/214/0001195110")
 #'   }
-
-getAllComment <- function(turl = url, ...) {
-  temp <-
-    getComment(
-      turl,
-      pageSize = 1,
-      page = 1,
-      sort = "favorite",
-      type = "list"
-    )
-  numPage <- ceiling(temp$result$pageModel$totalRows / 100)
-  comments <-
-    lapply(1:numPage, function(x)
-      getComment(
-        turl = turl,
-        pageSize = 100,
-        page = x,
-        type = "df",
-        ...
-      ))
-
-  comments <- dplyr::bind_rows(comments)
-
-  return(comments)
+getAllComment <- function(turl) {
+  get_comment(turl, "all", "df")
 }
+
+#' @importFrom purrr when
+#' @importFrom httr2 req_perform resp_body_string
+#' @importFrom jsonlite fromJSON
+get_comment <- function(turl,
+                        count = 10,
+                        type = c("df", "list")) {
+  . <- NULL
+  type <- match.arg(type)
+
+  count %>%
+    purrr::when(. == "all" ~ "all",
+                !is.numeric(.) ~ "error",
+                . > 100 ~ "over",
+                . <= 100 ~ "base",
+                ~ "error") -> count_case
+
+  if (count_case == "error") {
+    stop(paste0("count param can accept number or 'all'. your input: ", count))
+  }
+
+  turl <- get_real_url(turl)
+
+  count_case %>%
+    purrr::when(. == "base" ~ count,
+                ~ 100) %>%
+    req_build_comment(turl, ., NULL) %>%
+    httr2::req_perform() %>%
+    httr2::resp_body_string() %>%
+    rm_callback() %>%
+    jsonlite::fromJSON() -> dat
+
+  total <- dat$result$pageModel$totalRows
+  nextid <- dat$result$morePage$`next`
+
+  if (count_case == "base") {
+    return(transform_return(dat, type))
+  }
+
+  purrr::when(count_case == "all" ~ total,
+              total >= count ~ count,
+              total < count ~ {
+                warning("Request more than the actual total count, and use actual total count.")
+                total
+              }) -> tarsize
+
+  res <- list()
+  res[[1]] <- transform_return(dat, "df")
+
+  for (i in 2:ceiling(tarsize / 100)) {
+    req_build_comment(turl, 100, nextid) %>%
+      httr2::req_perform() %>%
+      httr2::resp_body_string() %>%
+      rm_callback() %>%
+      jsonlite::fromJSON() -> dat
+    res[[i]] <- transform_return(dat, "df")
+    nextid <- dat$result$morePage$`next`
+  }
+
+  return(do.call(rbind, res))
+}
+
