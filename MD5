@@ -1,8 +1,8 @@
-2a03aa3ab68e698f33a919c8ca048e3d *DESCRIPTION
+c2ebaf8144f4ddba2d0aca57a6ef58d5 *DESCRIPTION
 1c0868c9ca503a39f2997896c2d9ae2f *LICENSE
 c72d5300236eb62d79ecf589b3084edc *NAMESPACE
 c5a360958b6ebc318d31251e06e3d1a3 *R/N2H4-package.R
-af9f8e9556e012106a7515899c52f631 *R/getCategory.R
+6c59d30fbcb95b6a153ab200b411d658 *R/getCategory.R
 117851e5d582c757d323f90d3b779d9f *R/getComment.R
 94168907cc1671a52b25329be8731e74 *R/getCommentHistory.R
 62717bc66433fbe26ac663db62bb500e *R/getContent.R
@@ -11,7 +11,7 @@ ff7cc53ff9a1acf52c1a79696d9c42e7 *R/getMaxPageNum.R
 fa992eb3ff93e343e71cbc7c85e57932 *R/internal.R
 6422a6168fd4483474b62706cbc29d5b *R/sysdata.rda
 cf794928715019cf81bd51d467156178 *R/utils-pipe.R
-e2f48c23812b1cc8a3bb6e3280056e91 *man/N2H4-package.Rd
+993dc366f6721939f4e06926005f080b *man/N2H4-package.Rd
 dd53f20ffed92bb9d4fc1cecc65e90a9 *man/figures/logo.png
 49cb03419816fa706b5c45ea82d923d3 *man/figures/logo_crop.png
 ea8c96e1c3f2f6dcba9cc38d7f35a07e *man/figures/nnews.png

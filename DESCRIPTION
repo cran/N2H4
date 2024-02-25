@@ -1,7 +1,7 @@
 Package: N2H4
 Type: Package
 Title: Handling Methods for Naver News Text Crawling
-Version: 0.8.3
+Version: 0.8.4
 Authors@R: person(given = "Chanyub",
              family = "Park",
              role = c("aut","cre"),
@@ -18,8 +18,8 @@ Encoding: UTF-8
 Suggests: testthat, devtools, usethis
 Imports: rvest, jsonlite, tibble, lifecycle, httr2, magrittr
 NeedsCompilation: no
-Packaged: 2024-02-17 22:33:12 UTC; mrchypark
+Packaged: 2024-02-25 16:04:32 UTC; mrchypark
 Author: Chanyub Park [aut, cre] (<https://orcid.org/0000-0001-6474-2570>)
 Maintainer: Chanyub Park <mrchypark@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-02-17 23:20:34 UTC
+Date/Publication: 2024-02-25 16:20:02 UTC
